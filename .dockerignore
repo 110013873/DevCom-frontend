@@ -1,0 +1,21 @@
+# 构建产物与依赖：镜像内重新安装/构建
+node_modules
+dist
+dist-ssr
+coverage
+
+# 环境变量：VITE_* 在构建期由 build args 注入（见 Dockerfile），
+# 不从宿主机带 .env 进镜像 —— portal 的 Dockerfile 会 `COPY .env`，
+# 这里刻意不沿用该做法。
+.env
+.env.*
+!.env.example
+
+# 本地杂物
+*.log
+.vite
+.DS_Store
+.git
+.github
+.vscode
+.idea
