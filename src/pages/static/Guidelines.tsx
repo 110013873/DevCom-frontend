@@ -11,7 +11,7 @@ export default function Guidelines() {
     <>
       <SEOHead
         title="社区公约"
-        description="RISC-V AI 开发者社区的参与规范：鼓励什么、禁止什么、如何举报。"
+        description="TileLang for RISC-V 社区的参与规范：鼓励什么、禁止什么、如何举报。"
         canonicalUrl="/guidelines"
       />
       <PageHeader title="社区公约" description="为了让技术讨论保持有效与友好，请遵守以下约定。" />

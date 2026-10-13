@@ -22,12 +22,12 @@ describe('TopicAndDirections', () => {
     renderSection();
 
     [
-      '指令集与 AI 扩展',
+      '指令集扩展',
       'AI 编译器与工具链',
       '模型与算子库',
-      '芯片设计与 IP 核',
+      '仿真平台',
       '开发板与固件',
-      '基准测试与性能',
+      '技术文档',
     ].forEach(title => {
       expect(screen.getByText(title)).toBeInTheDocument();
     });
@@ -36,36 +36,40 @@ describe('TopicAndDirections', () => {
   it('有对应资源分类的方向链到真实的筛选 URL', () => {
     renderSection();
 
+    expect(screen.getByRole('link', { name: /指令集扩展/ })).toHaveAttribute(
+      'href',
+      '/resources?category=isa-extension',
+    );
     expect(screen.getByRole('link', { name: /AI 编译器与工具链/ })).toHaveAttribute(
       'href',
-      '/resources?category=toolchain',
+      '/resources?category=compiler-toolchain',
     );
     expect(screen.getByRole('link', { name: /模型与算子库/ })).toHaveAttribute(
       'href',
-      '/resources?category=library',
+      '/resources?category=model-operator-library',
     );
-    expect(screen.getByRole('link', { name: /开发板与固件/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /仿真平台/ })).toHaveAttribute(
       'href',
-      '/resources?category=board',
+      '/resources?category=simulation-platform',
     );
-    expect(screen.getByRole('link', { name: /基准测试与性能/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /技术文档/ })).toHaveAttribute(
       'href',
-      '/resources?category=benchmark',
+      '/resources?category=technical-docs',
     );
   });
 
   it('无对应分类的方向不可点，不给死链', () => {
     renderSection();
 
-    expect(screen.queryByRole('link', { name: /指令集与 AI 扩展/ })).not.toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: /芯片设计与 IP 核/ })).not.toBeInTheDocument();
+    // 「开发板与固件」在新资源分类词表里没有对应项
+    expect(screen.queryByRole('link', { name: /开发板与固件/ })).not.toBeInTheDocument();
   });
 
   it('带链接的方向显示「查看相关资源」提示，无链接的不显示', () => {
     renderSection();
 
-    // 四个有分类的方向各有一处提示
-    expect(screen.getAllByText('查看相关资源').length).toBe(4);
+    // 六个方向里五个有分类，各有一处提示
+    expect(screen.getAllByText('查看相关资源').length).toBe(5);
   });
 
   it('静态板块不出现「暂无」这类空态文案', () => {

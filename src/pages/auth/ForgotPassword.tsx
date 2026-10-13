@@ -77,7 +77,7 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <SEOHead title={zh.auth.forgotTitle} description="通过邮箱或手机验证码重置 RISC-V AI 开发者社区账号密码。" />
+      <SEOHead title={zh.auth.forgotTitle} description="通过邮箱或手机验证码重置 TileLang for RISC-V 社区账号密码。" />
       <AuthSplitLayout
         panelTitle={zh.authPanel.forgot.title}
         panelSubtitle={zh.authPanel.forgot.subtitle}

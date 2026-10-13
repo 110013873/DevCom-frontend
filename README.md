@@ -1,4 +1,4 @@
-# DevCom Frontend — RISC-V AI 开发者社区前端
+# DevCom Frontend — TileLang for RISC-V 社区前端
 
 React 18 + TypeScript + Vite + Tailwind v3 + shadcn/ui；后台管理另用 Ant Design。
 界面风格与官网 portal 保持一致，但**独立构建、独立部署**，与官网并列运行。
@@ -9,13 +9,23 @@ React 18 + TypeScript + Vite + Tailwind v3 + shadcn/ui；后台管理另用 Ant 
 
 ## 环境要求
 
-- Node.js 18.19.0
+- Node.js **22**（已由 `.nvmrc` 固定；Vite 7 要求 `>=20.19` 或 `>=22.12`）。
+
+  不要用 18.x —— `vite` 启动时调用 `crypto.hash`（Node 20.12+ 才提供），
+  在 18 上必然崩：`TypeError: crypto.hash is not a function`。
+  但 `npm run build` 在 18 下**能通过**，而 CI 与 Docker 构建都只跑 build，
+  所以这个坑只在本地起 dev server 时暴露，构建绿灯不代表能用。
+
+  注意后端（`dev-com-backend`）锁的是 **18.19.0**，两个项目 Node 版本不同，
+  各自目录下都有 `.nvmrc`，进入目录后 `nvm use` 即可。
+
 - 依赖安装**必须**带 `legacy-peer-deps`。仓库内的 `.npmrc` 已设好该开关，
   不要删 —— Vite 7 的可选 peer 链会让 npm 10 的依赖解析崩溃。
 
 ## 快速开始
 
 ```bash
+nvm use                       # 读 .nvmrc → Node 22
 npm ci
 cp .env.example .env          # 通常保持默认（VITE_API_BASE_URL 留空）
 npm run dev                   # http://localhost:8081
@@ -78,7 +88,7 @@ src/
 ```bash
 docker build \
   --build-arg VITE_API_BASE_URL= \
-  --build-arg VITE_SITE_NAME='RISC-V AI 开发者社区' \
+  --build-arg VITE_SITE_NAME='TileLang for RISC-V 社区' \
   --build-arg VITE_SITE_URL=https://community.tlaic.ac.cn \
   -t devcom-frontend .
 

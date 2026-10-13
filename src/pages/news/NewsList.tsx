@@ -96,7 +96,7 @@ export default function NewsList() {
     <>
       <SEOHead
         title="社区资讯"
-        description="RISC-V AI 开发者社区的最新动态、技术解读与生态进展。"
+        description="TileLang for RISC-V 社区的最新动态、技术解读与生态进展。"
         canonicalUrl="/news"
       />
 
@@ -142,35 +142,40 @@ export default function NewsList() {
             <div className="sticky top-24 space-y-6">
               <section className="rounded-[1.25rem] border border-border bg-card p-5 shadow-[var(--shadow-card)]">
                 <h2 className="text-sm font-semibold text-foreground">分类</h2>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setParams_({ category: null, page: null })}
-                    className={cn(
-                      'rounded-full border px-3 py-1 text-xs font-medium transition-colors',
-                      category === ''
-                        ? 'border-primary bg-primary text-primary-foreground'
-                        : 'border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground',
-                    )}
-                  >
-                    全部
-                  </button>
-                  {newsCategories.map(option => (
+                {/* 竖排列表（而不是横排药丸）：分类名长短不一，横排换行后会忽长忽短。
+                    选中项的竖条做成与整行等高 —— 矮条在小字号行里会显得像标点 */}
+                <ul className="mt-3">
+                  <li>
                     <button
-                      key={option.value}
                       type="button"
-                      onClick={() => setParams_({ category: option.value, page: null })}
+                      onClick={() => setParams_({ category: null, page: null })}
                       className={cn(
-                        'rounded-full border px-3 py-1 text-xs font-medium transition-colors',
-                        category === option.value
-                          ? 'border-primary bg-primary text-primary-foreground'
-                          : 'border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground',
+                        'relative w-full py-2 pl-4 pr-3 text-left text-sm transition-colors',
+                        category === ''
+                          ? 'bg-primary/10 font-medium text-primary before:absolute before:inset-y-0 before:left-0 before:w-[3px] before:bg-primary'
+                          : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                       )}
                     >
-                      {option.label}
+                      全部新闻
                     </button>
+                  </li>
+                  {newsCategories.map(option => (
+                    <li key={option.value}>
+                      <button
+                        type="button"
+                        onClick={() => setParams_({ category: option.value, page: null })}
+                        className={cn(
+                          'relative w-full py-2 pl-4 pr-3 text-left text-sm transition-colors',
+                          category === option.value
+                            ? 'bg-primary/10 font-medium text-primary before:absolute before:inset-y-0 before:left-0 before:w-[3px] before:bg-primary'
+                            : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                        )}
+                      >
+                        {option.label}
+                      </button>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </section>
 
               <section className="rounded-[1.25rem] border border-border bg-card p-5 shadow-[var(--shadow-card)]">

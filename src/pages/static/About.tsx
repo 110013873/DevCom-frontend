@@ -25,13 +25,13 @@ export default function About() {
           <h2>我们在做什么</h2>
           <ul>
             <li>
-              <strong>技术资讯</strong>：跟踪 RISC-V 生态与 AI 软硬件栈的进展，输出面向开发者的实践解读。
+              <strong>社区资讯</strong>：实时追踪 TileLang for RISC-V 行业动态、技术趋势等。
             </li>
             <li>
-              <strong>资源中心</strong>：沉淀工具链、算子库、固件与示例工程，按版本归档，便于复现与引用。
+              <strong>资源中心</strong>：提供开发工具、仿真平台、技术文档等，为开发者提供实践平台。
             </li>
             <li>
-              <strong>课程学习</strong>：组织从入门到进阶的学习路径，配套资料与动手实践，降低上手门槛。
+              <strong>学习中心</strong>：提供从入门到高阶的学习材料、学习路径。
             </li>
             <li>
               <strong>开源协作</strong>：推动社区成员参与开源项目，共享成果与经验。

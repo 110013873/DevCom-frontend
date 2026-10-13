@@ -53,7 +53,7 @@ export default function SubscriptionUnsubscribe() {
 
   return (
     <>
-      <SEOHead title="退订" description="退订 RISC-V AI 开发者社区的动态推送邮件。" />
+      <SEOHead title="退订" description="退订 TileLang for RISC-V 社区的动态推送邮件。" />
       <PageHeader title="退订" description="邮件订阅退订" />
 
       <div className="mx-auto w-full max-w-[640px] px-4 py-14 md:px-6 md:py-20">

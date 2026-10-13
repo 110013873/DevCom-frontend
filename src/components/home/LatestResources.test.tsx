@@ -11,7 +11,7 @@ function makeResource(id: string, name: string): ResourceListItem {
     name,
     summary: `摘要 ${name}`,
     coverImage: null,
-    category: 'toolchain',
+    category: 'compiler-toolchain',
     author: '平台',
     isRecommended: false,
     isFree: true,

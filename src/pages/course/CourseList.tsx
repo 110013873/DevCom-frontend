@@ -108,7 +108,7 @@ export default function CourseList() {
     <>
       <SEOHead
         title="学习中心"
-        description="RISC-V AI 开发者社区的学习中心：从入门到高级的体系化课程，覆盖 RISC-V 架构、AI 推理与工具链实践。"
+        description="TileLang for RISC-V 社区的学习中心：从入门到高级的体系化课程，覆盖 RISC-V 架构、AI 推理与工具链实践。"
         canonicalUrl="/courses"
       />
 

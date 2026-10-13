@@ -67,7 +67,7 @@ export default function DeveloperProfile() {
     <>
       <SEOHead
         title={`${profile.displayName} 的主页`}
-        description={profile.bio || `${profile.displayName} 在 RISC-V AI 开发者社区的个人主页。`}
+        description={profile.bio || `${profile.displayName} 在 TileLang for RISC-V 社区的个人主页。`}
         canonicalUrl={`/developers/${profile.id}`}
       />
 

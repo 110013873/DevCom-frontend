@@ -24,12 +24,11 @@ import type { NewsCategory } from '@/types/config';
  * 这是全站唯一一处刻意的重复，换来的是后端不可用时前台仍可降级可用。
  */
 export const FALLBACK_NEWS_CATEGORIES: NewsCategory[] = [
-  { value: 'news', label: '社区动态' },
-  { value: 'announcement', label: '公告' },
-  { value: 'technology', label: '技术解读' },
-  { value: 'ecosystem', label: '生态进展' },
-  { value: 'event', label: '活动' },
-  { value: 'industry', label: '行业观察' },
+  { value: 'industry-news', label: '行业资讯' },
+  { value: 'tech-frontier', label: '技术前沿' },
+  { value: 'company-news', label: '企业动态' },
+  { value: 'academic-research', label: '学术研究' },
+  { value: 'product-case', label: '产品案例' },
 ];
 
 /** 资源分类的中文名。资源分类后端有枚举校验，未命中说明数据异常，回退原值即可。 */

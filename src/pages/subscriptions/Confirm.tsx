@@ -53,7 +53,7 @@ export default function SubscriptionConfirm() {
 
   return (
     <>
-      <SEOHead title="确认订阅" description="确认订阅 RISC-V AI 开发者社区的动态推送。" />
+      <SEOHead title="确认订阅" description="确认订阅 TileLang for RISC-V 社区的动态推送。" />
       <PageHeader title="确认订阅" description="邮件订阅确认" />
 
       <div className="mx-auto w-full max-w-[640px] px-4 py-14 md:px-6 md:py-20">

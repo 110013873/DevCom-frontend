@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
 import { notificationApi } from '@/api/notification';
 import { queryKeys } from '@/lib/queryKeys';
 import { PRIMARY_NAV } from '@/routes/navigation';
@@ -117,27 +118,39 @@ function DesktopNavItem({ to, label }: { to: string; label: string }) {
 }
 
 /**
- * 品牌标识。图取自 `public/logo.png`（原样复制到 dist 根，故用绝对路径引用）。
+ * 品牌标识。
  *
- * 高度 40px / `md` 起 48px，对齐官网页头的 `h-10 md:h-12`：页头容器 `md` 起是
- * 72px，Logo 占三分之二，上下各留 12px。`w-auto` 保持原始宽高比（413×147，
- * 约 2.81:1），避免拉变形。
+ * 图来自后台「系统设置 → 站点配置 → 品牌信息 → Logo 地址」，经 `SiteConfigContext`
+ * 下发（`site_brand.logoUrl`）。**没有配置就什么都不渲染** —— 不回落本地图：
+ * 站点要换自己的 Logo，留一个旧图兜底只会让人以为配置没生效。
  *
- * 图是浅灰 + 橙的透明底图形，只有在深蓝页头上才立得住 —— 这也是页头改深底的
- * 原因之一，原先的白色玻璃页头几乎看不见它。
+ * 高度锁定、宽度自适应（`h-10 md:h-12` + `w-auto`），因此不依赖图片的真实尺寸，
+ * 运营填任意长宽比的图都不会被拉变形，也不能撑破页头。`object-contain` 兜住
+ * 万一 w-auto 算出的宽度溢出。上限 `max-w-[200px]` 防止超宽图把导航挤走。
  *
- * `alt` 用站点名而非「logo」—— 读屏用户需要知道这里是站点入口，而不是听到一个
- * 无意义的图形标签；同时图片加载失败时，替代文本也是这条链接唯一的可读内容。
+ * 加载失败时按「没配置」处理（`onError` 收起）：运营填错链接是常见操作，
+ * 页头上留一个碎图图标不如不显示。
+ *
+ * 注意 `key={logoUrl}`：换图时强制重建 `<img>`，否则上一次的 error 状态会
+ * 一直卡住新图（React 不会因为 src 变了就清掉 DOM 上的失败态）。
  */
 function BrandLogo() {
+  const { brand } = useSiteConfig();
+  const [failed, setFailed] = useState(false);
+
+  // 后端把配置当稀疏表存，空串是「没设置」的正常取值，不是错误
+  const logoUrl = brand.logoUrl?.trim();
+  if (!logoUrl || failed) {
+    return null;
+  }
+
   return (
     <img
-      src="/logo.png"
-      alt={zh.site.name}
-      className="h-10 w-auto transition-transform duration-300 group-hover:scale-105 md:h-12"
-      // 原生尺寸经等比缩放后按实际宽度预留，避免加载完成时导航栏发生横向跳动
-      width={413}
-      height={147}
+      key={logoUrl}
+      src={logoUrl}
+      alt={brand.name ?? zh.site.name}
+      onError={() => setFailed(true)}
+      className="h-10 w-auto max-w-[200px] object-contain transition-transform duration-300 group-hover:scale-105 md:h-12"
     />
   );
 }
@@ -156,9 +169,9 @@ export function SiteHeader() {
   const navigate = useNavigate();
   const { status, user, isAdmin, logout } = useAuth();
 
-  // 品牌名走本地文案。后台可配置的 site_brand 随内容阶段（B）的 /v1/config 一并接入，
-  // 在此之前不放假接口，避免首屏出现「加载中」的空气态。
-  const siteName = zh.site.name;
+  const { brand } = useSiteConfig();
+  // 品牌名走后台配置，带本地兜底 —— 配置里 name 是必填，但接口失败时不能让页头空着
+  const siteName = brand.name ?? zh.site.name;
 
   const navItems = PRIMARY_NAV;
 
@@ -192,15 +205,14 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 md:h-[72px] md:px-6">
         <Link
           to="/"
+          // `group` 是给 Logo 的 `group-hover:scale-105` 用的，别删
           className="group flex shrink-0 items-center gap-3"
           onClick={() => setMobileOpen(false)}
         >
           <BrandLogo />
-          {/* 站点全名在窄屏下让位给 Logo：`hidden sm:inline` 避免与导航挤在一起换行。
-              浅灰 Logo 已在深底上表意，够窄时直接收起文字，减少一次视觉竞争。 */}
-          <span className="hidden text-lg font-semibold tracking-tight text-white sm:inline">
-            {siteName}
-          </span>
+          {/* 站点全名**始终可见**：Logo 现在按配置决定有无，窄屏下若再收起文字，
+              没配 Logo 的站点会只剩一个空的点击区。 */}
+          <span className="text-lg font-semibold tracking-tight text-white">{siteName}</span>
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex">

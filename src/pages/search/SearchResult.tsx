@@ -94,7 +94,7 @@ export default function SearchResultPage() {
     <>
       <SEOHead
         title={keyword ? `搜索「${keyword}」` : '搜索'}
-        description="在 RISC-V AI 开发者社区中检索资讯、资源与课程。"
+        description="在 TileLang for RISC-V 社区中检索资讯、资源与课程。"
       />
 
       <PageHeader title="全站搜索" description="一次检索资讯、资源与课程" />

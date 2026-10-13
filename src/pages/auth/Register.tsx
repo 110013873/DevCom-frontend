@@ -123,7 +123,7 @@ export default function Register() {
 
   return (
     <>
-      <SEOHead title={zh.auth.registerTitle} description="注册 RISC-V AI 开发者社区账号，获取技术资讯、开发资源与课程。" />
+      <SEOHead title={zh.auth.registerTitle} description="注册 TileLang for RISC-V 社区账号，获取技术资讯、开发资源与课程。" />
       <AuthSplitLayout
         panelTitle={zh.authPanel.register.title}
         panelSubtitle={zh.authPanel.register.subtitle}

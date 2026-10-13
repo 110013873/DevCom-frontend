@@ -9,9 +9,9 @@
 
 export const zh = {
   site: {
-    name: 'RISC-V AI 开发者社区',
-    shortName: 'RISC-V AI 社区',
-    slogan: '开放协作，共建 RISC-V 与 AI 的开源生态',
+    name: 'TileLang for RISC-V 社区',
+    shortName: 'TileLang AI 社区',
+    slogan: '开放协作，共建 TileLang for RISC-V 的开源生态',
     /** 官网首页，用于页脚与「返回官网」入口 */
     portalUrl: 'https://www.tlaic.ac.cn',
     portalName: '北京通明湖信息技术应用创新中心',
@@ -74,8 +74,8 @@ export const zh = {
    */
   authPanel: {
     register: {
-      title: '加入 RISC-V AI 开发者社区',
-      subtitle: '开放协作，共建 RISC-V 与 AI 的开源生态',
+      title: '加入 TileLang for RISC-V 社区',
+      subtitle: '开放协作，共建 TileLang for RISC-V 的开源生态',
       bullets: [
         '获取 RISC-V 指令集与 AI 扩展的技术资讯',
         '下载工具链、算子库、开发板固件与示例工程',

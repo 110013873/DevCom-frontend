@@ -39,7 +39,7 @@ jobs:
           provenance: false
           build-args: |
             VITE_API_BASE_URL=
-            VITE_SITE_NAME=RISC-V AI 开发者社区
+            VITE_SITE_NAME=TileLang for RISC-V 社区
             VITE_SITE_URL=https://community.tlaic.ac.cn
           tags: |
             ${{ secrets.ALIYUN_BJ_REGISTRY }}/chat-assist-develop/devcom-frontend:latest
@@ -63,7 +63,7 @@ jobs:
           provenance: false
           build-args: |
             VITE_API_BASE_URL=
-            VITE_SITE_NAME=RISC-V AI 开发者社区
+            VITE_SITE_NAME=TileLang for RISC-V 社区
             VITE_SITE_URL=
           tags: |
             ${{ secrets.ALIYUN_BJ_REGISTRY }}/chat-assist-develop/devcom-frontend-dev:latest

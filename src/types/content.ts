@@ -106,15 +106,19 @@ export interface NewsQuery extends PaginationQuery {
 // 资源
 // ---------------------------------------------------------------------------
 
-export type ResourceCategory = 'model' | 'dataset' | 'toolchain' | 'board' | 'library' | 'benchmark';
+export type ResourceCategory =
+  | 'isa-extension'
+  | 'compiler-toolchain'
+  | 'model-operator-library'
+  | 'simulation-platform'
+  | 'technical-docs';
 
 export const RESOURCE_CATEGORY_LABELS: Record<ResourceCategory, string> = {
-  model: '模型',
-  dataset: '数据集',
-  toolchain: '工具链',
-  board: '开发板',
-  library: '软件库',
-  benchmark: '基准测试',
+  'isa-extension': '指令集扩展',
+  'compiler-toolchain': 'AI 编译器与工具链',
+  'model-operator-library': '模型与算子库',
+  'simulation-platform': '仿真平台',
+  'technical-docs': '技术文档',
 };
 
 export interface ResourceListItem {

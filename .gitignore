@@ -9,3 +9,4 @@ coverage
 .DS_Store
 *.log
 .vite
+tsconfig.app.tsbuildinfo

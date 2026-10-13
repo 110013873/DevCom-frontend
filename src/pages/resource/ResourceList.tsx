@@ -58,6 +58,13 @@ export default function ResourceList() {
   const recommended = params.get('recommended') === 'true';
   const free = params.get('free') === 'true';
 
+  /**
+   * 分类词表改版后，旧链接/收藏里的值（如 `?category=toolchain`）仍是合法字符串，
+   * 但后端枚举校验会判为非法并整个请求回 400 —— 页面就变成「加载失败」，而用户
+   * 只是筛不到东西。这类值不发请求，直接落到空态；地址栏保留原值，便于看出链接过期。
+   */
+  const categoryIsKnown = category === '' || category in RESOURCE_CATEGORY_LABELS;
+
   const [keywordInput, setKeywordInput] = useState(keyword);
   const debouncedKeyword = useDebounce(keywordInput, KEYWORD_DEBOUNCE_MS);
 
@@ -104,6 +111,8 @@ export default function ResourceList() {
   const listQuery = useQuery({
     queryKey: queryKeys.resources.list(query),
     queryFn: () => resourceApi.list(query),
+    // 失效分类不发请求：后端会 400，前端只能显示成「加载失败」，但那不是故障
+    enabled: categoryIsKnown,
   });
 
   const tagsQuery = useQuery({
@@ -149,11 +158,11 @@ export default function ResourceList() {
     <>
       <SEOHead
         title="资源中心"
-        description="RISC-V AI 开发者社区的资源中心：模型、数据集、工具链、开发板、软件库与基准测试。"
+        description="TileLang for RISC-V 社区的资源中心：指令集扩展、AI 编译器与工具链、模型与算子库、仿真平台与技术文档。"
         canonicalUrl="/resources"
       />
 
-      <PageHeader title="资源中心" description="模型、数据集、工具链、开发板与基准测试，一站式获取" />
+      <PageHeader title="资源中心" description="指令集扩展、AI 编译器与工具链、模型与算子库、仿真平台与技术文档，一站式获取" />
 
       <div className="mx-auto w-full max-w-[1280px] px-4 py-10 md:px-6 md:py-14">
         <div className="mb-8 space-y-4">
@@ -217,12 +226,18 @@ export default function ResourceList() {
           )}
         </div>
 
-        {listQuery.isLoading && <LoadingBlock label="正在加载资源..." />}
+        {categoryIsKnown && listQuery.isLoading && <LoadingBlock label="正在加载资源..." />}
 
-        {listQuery.isError && <ErrorState message="资源加载失败，请稍后重试" onRetry={() => void listQuery.refetch()} />}
+        {categoryIsKnown && listQuery.isError && (
+          <ErrorState message="资源加载失败，请稍后重试" onRetry={() => void listQuery.refetch()} />
+        )}
 
-        {listQuery.data && listQuery.data.items.length === 0 && (
+        {categoryIsKnown && listQuery.data && listQuery.data.items.length === 0 && (
           <EmptyState title="没有找到相关资源" description="换个关键词或分类试试，或清空筛选条件查看全部内容。" />
+        )}
+
+        {!categoryIsKnown && (
+          <EmptyState title="没有找到相关资源" description="这个分类已不存在，换个分类或清空筛选条件查看全部内容。" />
         )}
 
         {listQuery.data && listQuery.data.items.length > 0 && (

@@ -5,7 +5,7 @@ import { queryKeys } from '@/lib/queryKeys';
 import { FALLBACK_NEWS_CATEGORIES } from '@/lib/contentLabels';
 import type { NewsCategory, SiteBrand, SiteFooterConfig, SiteConfig } from '@/types/config';
 
-interface SiteConfigContextValue {
+export interface SiteConfigContextValue {
   /** 新闻分类词表。**永不为空**：接口未返回或失败时回落到本地兜底词表。 */
   newsCategories: NewsCategory[];
   /** 分类展示名。未知分类原样返回 —— 后端允许自由取值，不能显示成空。 */
@@ -20,10 +20,10 @@ const SiteConfigContext = createContext<SiteConfigContextValue | null>(null);
 
 /** 品牌兜底：与后端 `DEFAULT_SYSTEM_CONFIGS.site_brand` 对齐，保证首屏不空白。 */
 const FALLBACK_BRAND: SiteBrand = {
-  name: 'RISC-V AI 开发者社区',
-  shortName: 'RISC-V AI 社区',
-  slogan: '开放协作，共建 RISC-V 与 AI 的开源生态',
-  logoUrl: '',
+  name: 'TileLang for RISC-V 社区',
+  shortName: 'TileLang AI 社区',
+  slogan: '开放协作，共建 TileLang for RISC-V 的开源生态',
+  logoUrl: '/logo.svg',
 };
 
 const FALLBACK_FOOTER: SiteFooterConfig = { contactEmail: '', icp: '', publicSecurity: '', links: [] };
@@ -88,4 +88,18 @@ export function useSiteConfig(): SiteConfigContextValue {
     throw new Error('useSiteConfig 必须在 SiteConfigProvider 内部使用');
   }
   return context;
+}
+
+/**
+ * 不抛异常的版本，给「Provider 可有可无」的调用方用。
+ *
+ * 面向的是 `SEOHead` 这类可能被单独渲染的组件：线上它总在 Provider 之内
+ * （见 `main.tsx`），但组件单测里没人会给一个纯 SEO 组件套 Provider。
+ * 让这种场景直接抛异常，等于逼着每个测试文件都补一层与此无关的包装。
+ *
+ * 返回 `null` 表示「不在 Provider 内」，调用方自行回落本地默认值 ——
+ * 区分于「在 Provider 内但配置为空」，后者拿到的是兜底对象。
+ */
+export function useOptionalSiteConfig(): SiteConfigContextValue | null {
+  return useContext(SiteConfigContext);
 }

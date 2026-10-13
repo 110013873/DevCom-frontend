@@ -49,12 +49,11 @@ const DEFAULTS: {
  * 若它在别处被改过而这里落后，运营打开页面会看到一个与实际生效不符的初始值。
  */
 const DEFAULT_CATEGORIES: NewsCategoriesConfig = [
-  { value: 'news', label: '社区动态' },
-  { value: 'announcement', label: '公告' },
-  { value: 'technology', label: '技术解读' },
-  { value: 'ecosystem', label: '生态进展' },
-  { value: 'event', label: '活动' },
-  { value: 'industry', label: '行业观察' },
+  { value: 'industry-news', label: '行业资讯' },
+  { value: 'tech-frontier', label: '技术前沿' },
+  { value: 'company-news', label: '企业动态' },
+  { value: 'academic-research', label: '学术研究' },
+  { value: 'product-case', label: '产品案例' },
 ];
 
 /** 分类入库值的长度上限，与后端 `NEWS_CATEGORY_VALUE_MAX` 一致。 */
@@ -257,10 +256,10 @@ export default function AdminSiteConfig() {
           <Form form={brandForm} layout="vertical" disabled={disabled}>
             <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2">
               <Form.Item name="name" label="站点全称" rules={[{ required: true, message: '请填写站点全称' }]}>
-                <Input maxLength={60} placeholder="RISC-V AI 开发者社区" />
+                <Input maxLength={60} placeholder="TileLang for RISC-V 社区" />
               </Form.Item>
               <Form.Item name="shortName" label="站点简称">
-                <Input maxLength={20} placeholder="开发者社区" />
+                <Input maxLength={25} placeholder="开发者社区" />
               </Form.Item>
             </div>
             <Form.Item name="slogan" label="标语">
@@ -270,7 +269,7 @@ export default function AdminSiteConfig() {
               name="logoUrl"
               label="Logo 地址"
               rules={[{ type: 'url', message: '请填写合法的 URL' }]}
-              extra="留空则使用站点默认 Logo。"
+              extra="留空则前台页头不显示 Logo，只显示站点名称。"
             >
               <Input placeholder="https://…/logo.png" />
             </Form.Item>

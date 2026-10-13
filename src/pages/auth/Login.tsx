@@ -47,7 +47,7 @@ export default function Login() {
 
   return (
     <>
-      <SEOHead title={zh.auth.loginTitle} description="登录 RISC-V AI 开发者社区，管理个人资料、下载开发资源。" />
+      <SEOHead title={zh.auth.loginTitle} description="登录 TileLang for RISC-V 社区，管理个人资料、下载开发资源。" />
       <AuthSplitLayout
         panelTitle={zh.authPanel.login.title}
         panelSubtitle={zh.authPanel.login.subtitle}

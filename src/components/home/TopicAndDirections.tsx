@@ -16,43 +16,43 @@ interface DirectionEntry {
 
 /**
  * 六个技术方向。`resourceCategory` 与后端资源分类枚举
- * （`model` / `dataset` / `toolchain` / `board` / `library` / `benchmark`）对齐，
- * 使「方向」与「资源」两类信息能对上号；「指令集」与「芯片设计」没有对应的资源
- * 分类，因此为 `null`。
+ * （`isa-extension` / `compiler-toolchain` / `model-operator-library` /
+ * `simulation-platform` / `technical-docs`）对齐，使「方向」与「资源」两类信息能
+ * 对上号；「开发板与固件」在新词表里没有对应的资源分类，因此为 `null`。
  *
  * 不导出：本文件是纯组件文件，导出常量会让 Fast Refresh 失效
  * （`react-refresh/only-export-components`）。测试直接断言渲染结果。
  */
 const DIRECTION_ENTRIES: readonly DirectionEntry[] = [
   {
-    title: '指令集与 AI 扩展',
+    title: '指令集扩展',
     description: 'RISC-V 基础指令集、向量扩展与面向 AI 负载的自定义扩展设计。',
-    resourceCategory: null,
+    resourceCategory: 'isa-extension',
   },
   {
     title: 'AI 编译器与工具链',
     description: '面向 RISC-V 的编译、图优化、算子融合与代码生成。',
-    resourceCategory: 'toolchain',
+    resourceCategory: 'compiler-toolchain',
   },
   {
     title: '模型与算子库',
     description: '常见模型的移植适配，以及高性能算子库的实现与调优。',
-    resourceCategory: 'library',
+    resourceCategory: 'model-operator-library',
   },
   {
-    title: '芯片设计与 IP 核',
-    description: '处理器核、加速器与 SoC 集成，含 RTL 与验证方法。',
-    resourceCategory: null,
+    title: '仿真平台',
+    description: '包含 Qemu 模拟器、Gem5 模拟器等',
+    resourceCategory: 'simulation-platform',
   },
   {
     title: '开发板与固件',
     description: '开发板支持包、启动固件、驱动与端侧部署示例。',
-    resourceCategory: 'board',
+    resourceCategory: null,
   },
   {
-    title: '基准测试与性能',
-    description: '性能评测方法、基准套件与优化前后的量化对比。',
-    resourceCategory: 'benchmark',
+    title: '技术文档',
+    description: '包括技术规范、设计和开发文档等',
+    resourceCategory: 'technical-docs',
   },
 ];
 
@@ -72,12 +72,12 @@ export function TopicAndDirections() {
     <section className="mx-auto max-w-[1280px] px-4 py-12 md:px-6 md:py-16">
       <div className="max-w-3xl">
         <h2 className="text-xl font-semibold tracking-tight text-foreground md:text-2xl">
-          围绕 RISC-V 与 AI 的开放生态
+          围绕 TileLang for RISC-V 的开放生态
         </h2>
         <p className="mt-5 text-base leading-relaxed text-muted-foreground">
           RISC-V 以开放指令集为起点，正在从嵌入式走向高性能计算与 AI 加速。社区围绕
-          「指令集扩展 — 编译与算子 — 芯片与 IP — 系统软件」这条链路组织内容，把可复用的
-          工具链、算子库、开发板固件与评测方法沉淀下来，降低从学习到落地的门槛。
+          「指令集扩展 — AI编译器与工具链 — 模型与算子库 — 仿真平台」这条链路组织内容，把可复用的
+          工具链、算子库、仿真测试等方法沉淀下来，降低从学习到落地的门槛。
         </p>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">
           以下六个方向对应社区持续投入的技术领域。带链接的方向可以直达相关资源的筛选结果。

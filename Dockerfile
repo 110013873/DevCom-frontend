@@ -13,7 +13,7 @@ WORKDIR /app
 # VITE_* 是**构建期内联**的，不是运行时读取：必须在 npm run build
 # 之前提供。留空则前端走同源相对路径，由 nginx 反代 /v1、/static。
 ARG VITE_API_BASE_URL=""
-ARG VITE_SITE_NAME="RISC-V AI 开发者社区"
+ARG VITE_SITE_NAME="TileLang for RISC-V 社区"
 ARG VITE_SITE_URL=""
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL \
     VITE_SITE_NAME=$VITE_SITE_NAME \

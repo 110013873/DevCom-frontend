@@ -56,7 +56,7 @@ interface ResourceFormValues {
 
 const EMPTY_FORM: ResourceFormValues = {
   name: '',
-  category: 'model',
+  category: 'isa-extension',
   status: 'draft',
   isPublic: true,
   isRecommended: false,
