@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import type { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
 import { uploadFile } from '@/api/upload';
@@ -47,8 +47,24 @@ export default function RichTextEditor({ value, onChange, placeholder, minHeight
   const [videoUploading, setVideoUploading] = useState(false);
   const [videoProgress, setVideoProgress] = useState(0);
 
+  /**
+   * 编辑器挂载后会**自己**触发一次 `onChange` 并吐出空内容（`<p><br></p>`）。
+   *
+   * 这条空内容会经 `onChange` 回调把父组件里刚灌进来的正文覆盖掉 —— 编辑页
+   * 「详情先到、编辑器后挂载」时，正文就这样消失，而且此后 `value` 与
+   * `editor.getHtml()` 都是空，防抖比对判定一致，再也不会重灌。
+   *
+   * 因此在用户**真正点到编辑区**之前，忽略编辑器主动上报的内容。用 `onFocus`
+   * 当开门信号：`setHtml` 是程序调用，不会触发 focus，所以回填过程不会被误判
+   * 成用户输入。WangEditor 没有「这次变更来自用户还是程序」的标记位，只能这样区分。
+   */
+  const userEditingRef = useRef(false);
+
   const editorConfig: Partial<IEditorConfig> = {
     placeholder: placeholder ?? '在这里输入正文内容…',
+    onFocus() {
+      userEditingRef.current = true;
+    },
     MENU_CONF: {
       uploadImage: {
         async customUpload(file: File, insertFn: (url: string, alt: string, href: string) => void) {
@@ -70,7 +86,19 @@ export default function RichTextEditor({ value, onChange, placeholder, minHeight
       },
     },
     onChange(ed: IDomEditor) {
+      if (!userEditingRef.current) {
+        return;
+      }
       onChange(ed.getHtml());
+    },
+    /**
+     * 失焦时补报一次。用户可能「选中全文删掉」后立刻点保存 —— 那一下没有
+     * 击键，若只在 onChange 里放行，这次清空会被漏掉。
+     */
+    onBlur(ed: IDomEditor) {
+      if (userEditingRef.current) {
+        onChange(ed.getHtml());
+      }
     },
   };
 
@@ -80,9 +108,12 @@ export default function RichTextEditor({ value, onChange, placeholder, minHeight
    * `value !== editor.getHtml()` 这个判断不能省：编辑器每次输入都会触发
    * `onChange` → 父组件 setState → `value` 变化 → 这个 effect，若不做比对
    * 就会 `setHtml` 一次，光标被顶到开头，用户打字时光标乱跳。
+   *
+   * 但用户**开始输入之后**就不能再回灌了：此时 `value` 是上一轮的快照，回灌
+   * 会把光标拉回开头。用户输入期间两边本就同步，这个 effect 空转即可。
    */
   useEffect(() => {
-    if (!editor) {
+    if (!editor || userEditingRef.current) {
       return;
     }
     if (value !== editor.getHtml()) {

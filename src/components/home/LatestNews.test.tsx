@@ -81,7 +81,8 @@ describe('LatestNews', () => {
       <LatestNews items={[makeNews('n1', '动态一')]} isLoading={false} isError={false} onRetry={vi.fn()} />,
     );
 
-    expect(screen.getByText('技术主题')).toBeInTheDocument();
+    // 「技术主题」专题页尚未实现，整块已下线，不要被顺手加回来
+    expect(screen.queryByText('技术主题')).not.toBeInTheDocument();
     expect(screen.getByText('快速入口')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /资源中心/ })).toHaveAttribute('href', '/resources');
   });

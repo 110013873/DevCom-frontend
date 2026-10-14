@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Boxes, Cpu, FlaskConical, Gauge, LayoutGrid, Wrench } from 'lucide-react';
+import { ArrowRight, Boxes, Cpu, Gauge, LayoutGrid, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ResourceCategory } from '@/types/content';
 
@@ -15,10 +15,10 @@ interface DirectionEntry {
 }
 
 /**
- * 六个技术方向。`resourceCategory` 与后端资源分类枚举
+ * 五个技术方向。`resourceCategory` 与后端资源分类枚举
  * （`isa-extension` / `compiler-toolchain` / `model-operator-library` /
- * `simulation-platform` / `technical-docs`）对齐，使「方向」与「资源」两类信息能
- * 对上号；「开发板与固件」在新词表里没有对应的资源分类，因此为 `null`。
+ * `simulation-platform` / `technical-docs`）一一对齐，使「方向」与「资源」两类信息
+ * 能对上号，每个方向都能链到真实的筛选结果。
  *
  * 不导出：本文件是纯组件文件，导出常量会让 Fast Refresh 失效
  * （`react-refresh/only-export-components`）。测试直接断言渲染结果。
@@ -45,25 +45,19 @@ const DIRECTION_ENTRIES: readonly DirectionEntry[] = [
     resourceCategory: 'simulation-platform',
   },
   {
-    title: '开发板与固件',
-    description: '开发板支持包、启动固件、驱动与端侧部署示例。',
-    resourceCategory: null,
-  },
-  {
     title: '技术文档',
     description: '包括技术规范、设计和开发文档等',
     resourceCategory: 'technical-docs',
   },
 ];
 
-const ICONS = [LayoutGrid, Wrench, Boxes, Cpu, FlaskConical, Gauge] as const;
+const ICONS = [LayoutGrid, Wrench, Boxes, Cpu, Gauge] as const;
 
 /**
  * RISC-V 主题与方向矩阵。
  *
  * 纯静态板块：主题说明是产品定位文案，方向卡片把既有资源分类重新组织成
- * 「技术方向」这个视角。有对应资源分类的方向链到真实的筛选结果，没有的渲染成
- * 不可点卡片 —— 给一个点进去是空列表的链接比不可点更糟。
+ * 「技术方向」这个视角，每张卡片都链到真实的筛选结果。
  *
  * 本区块不含任何数字或统计口径的表述，避免被误读为运营数据。
  */
@@ -80,7 +74,7 @@ export function TopicAndDirections() {
           工具链、算子库、仿真测试等方法沉淀下来，降低从学习到落地的门槛。
         </p>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-          以下六个方向对应社区持续投入的技术领域。带链接的方向可以直达相关资源的筛选结果。
+          以下五个方向对应社区持续投入的技术领域，均可直达相关资源的筛选结果。
         </p>
       </div>
 
@@ -99,22 +93,12 @@ export function TopicAndDirections() {
                 {entry.title}
               </p>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{entry.description}</p>
-              {entry.resourceCategory && (
-                <span className="mt-auto inline-flex items-center gap-1 pt-4 text-sm font-medium text-primary">
-                  查看相关资源
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </span>
-              )}
+              <span className="mt-auto inline-flex items-center gap-1 pt-4 text-sm font-medium text-primary">
+                查看相关资源
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </span>
             </>
           );
-
-          if (!entry.resourceCategory) {
-            return (
-              <div key={entry.title} className={cardClass}>
-                {inner}
-              </div>
-            );
-          }
 
           return (
             <Link

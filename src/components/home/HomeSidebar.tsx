@@ -1,15 +1,18 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
-/** 侧栏的技术主题词条。纯展示，不链接 —— 对应的专题页尚未实现。 */
-const TOPICS = [
-  'RISC-V 指令集与 AI 扩展',
-  'AI 编译器与算子优化',
-  '芯片设计与 IP 核',
-  '工具链与仿真验证',
-  '开发板与固件',
-  '基准测试与性能评估',
-];
+/*
+ * 侧栏的技术主题词条。纯展示，不链接 —— 对应的专题页尚未实现，
+ * 因此整块下线。恢复时去掉下面这段注释和 JSX 里的对应注释即可。
+ *
+ * const TOPICS = [
+ *   'RISC-V 指令集与 AI 扩展',
+ *   'AI 编译器与算子优化',
+ *   '芯片设计与 IP 核',
+ *   '工具链与仿真验证',
+ *   '基准测试与性能评估',
+ * ];
+ */
 
 /** 侧栏的社区入口。全部指向已实现的路由。 */
 const ENTRIES = [
@@ -21,14 +24,17 @@ const ENTRIES = [
 /**
  * 最新动态的右侧栏。
  *
- * 两部分都是静态内容：主题词条是产品说明（对应专题页尚未实现，因此做成不可点的
- * 标签而不是假链接），社区入口指向已实现路由。
+ * 只有快速入口一部分，指向已实现路由。
+ *
+ * 「技术主题」词条（不可点的标签，对应专题页尚未实现）已整块注释掉，
+ * 专题页做出来后恢复 `TOPICS` 和 `<aside>` 里那段。
  *
  * 窄屏下整块移到列表下方（由 `LatestNews` 的网格决定），此处不自带响应式隐藏。
  */
 export function HomeSidebar() {
   return (
     <aside className="space-y-5">
+      {/* 技术主题词条 —— 专题页尚未实现，整块下线。恢复时把它接回上面的 <aside> 里。
       <div className="rounded-[1.25rem] border border-border bg-card p-5 shadow-[var(--shadow-card)]">
         <h3 className="text-sm font-semibold text-foreground">技术主题</h3>
         <div className="mt-4 flex flex-wrap gap-2">
@@ -42,6 +48,7 @@ export function HomeSidebar() {
           ))}
         </div>
       </div>
+      */}
 
       <div className="rounded-[1.25rem] border border-border bg-card p-5 shadow-[var(--shadow-card)]">
         <h3 className="text-sm font-semibold text-foreground">快速入口</h3>
