@@ -23,6 +23,8 @@ interface RichTextEditorProps {
 }
 
 const toolbarConfig: Partial<IToolbarConfig> = {
+  // Keep link/image dialogs outside the editor's scrolling and clipping containers.
+  modalAppendToBody: true,
   toolbarKeys: [
     'headerSelect',
     'bold', 'italic', 'underline', 'through', 'color', 'bgColor',
@@ -160,6 +162,16 @@ export default function RichTextEditor({ value, onChange, placeholder, minHeight
         style={{ flex: 1, overflowY: 'auto', minHeight }}
       />
       <style>{`
+        body > .w-e-modal {
+          position: fixed;
+          top: 50%;
+          margin: 0 auto;
+          transform: translateY(-50%);
+          max-width: calc(100vw - 32px);
+          max-height: calc(100dvh - 32px);
+          overflow-y: auto;
+          z-index: 1100;
+        }
         .w-e-toolbar { flex-wrap: wrap !important; }
         .w-e-text-container [data-slate-editor] p { line-height: 1.8; }
       `}</style>
