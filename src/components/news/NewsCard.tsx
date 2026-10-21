@@ -34,11 +34,13 @@ export function NewsCard({ item, className }: NewsCardProps) {
     >
       <Link to={`/news/${item.id}`} className="flex flex-col sm:flex-row">
         {item.coverImage && (
-          <div className="sm:w-64 sm:shrink-0">
+          // 固定尺寸的框 + `object-contain`：封面尺寸由运营自由上传，宽高比不统一，
+          // `object-cover` 会把两侧（或上下）裁掉，标题/图形被切。留白用底色补齐。
+          <div className="bg-surface-elevated sm:w-64 sm:shrink-0">
             <OptimizedImage
               src={item.coverImage}
               alt={item.title}
-              className="h-44 w-full object-cover sm:h-full"
+              className="h-44 w-full object-contain sm:h-full"
             />
           </div>
         )}
