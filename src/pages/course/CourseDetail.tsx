@@ -4,10 +4,12 @@ import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, CalendarDays, Clock, ExternalLink, FileText, Lock, PlayCircle, User } from 'lucide-react';
 import { SEOHead } from '@/components/common/SEOHead';
 import { ErrorState, LoadingBlock } from '@/components/common/PageStates';
+import { RichContent } from '@/components/markdown';
 import { Badge } from '@/components/ui/badge';
 import { courseApi } from '@/api/course';
 import { queryKeys } from '@/lib/queryKeys';
 import { formatDateTime } from '@/lib/datetime';
+import { toPlainText } from '@/lib/text';
 import { COURSE_LEVEL_LABELS, LESSON_TYPE_LABELS, type CourseDay, type LessonSummary } from '@/types/content';
 
 /** 课节类型图标。`external` 用外链图标，其余按内容形态区分。 */
@@ -42,6 +44,13 @@ export default function CourseDetail() {
   });
 
   const course = detailQuery.data;
+
+  /**
+   * `description` 是后台富文本编辑器产出的 HTML（见 `CourseEditor` 的
+   * `RichTextEditor`），不能当纯文本塞进 JSX —— 那样会把 `<p>`、`<a>` 原样
+   * 显示出来。渲染走 `SafeHtml`（带 DOMPurify 净化）。
+   */
+  const descriptionText = useMemo(() => toPlainText(course?.description), [course?.description]);
 
   /**
    * 有 Day 的课程按 Day 分组展示；课节如果没有归入任何 Day（后端 `dayId` 为
@@ -91,7 +100,7 @@ export default function CourseDetail() {
     <>
       <SEOHead
         title={course.title}
-        description={course.description}
+        description={descriptionText}
         canonicalUrl={`/courses/${course.id}`}
         ogImage={course.coverImage ?? undefined}
       />
@@ -148,9 +157,7 @@ export default function CourseDetail() {
         {course.description && (
           <section className="mt-8">
             <h2 className="text-base font-semibold text-foreground">课程介绍</h2>
-            <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-relaxed text-muted-foreground">
-              {course.description}
-            </p>
+            <RichContent content={course.description} className="mt-3 text-sm text-muted-foreground" />
           </section>
         )}
 

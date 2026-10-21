@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Download, FileArchive, Github, Loader2, Star } from 'lucide-react';
 import { SEOHead } from '@/components/common/SEOHead';
 import { ErrorState, LoadingBlock } from '@/components/common/PageStates';
-import { Markdown } from '@/components/markdown';
+import { Markdown, RichContent } from '@/components/markdown';
 import { InteractionBar } from '@/components/comment/InteractionBar';
 import { FeedbackSection } from '@/components/resource/FeedbackSection';
 import { RatingStars } from '@/components/resource/RatingStars';
@@ -337,7 +337,7 @@ export default function ResourceDetail() {
 
           <TabsContent value="overview" className="mt-6">
             {resource.overview ? (
-              <Markdown content={resource.overview} />
+              <RichContent content={resource.overview} />
             ) : (
               <p className="text-sm text-muted-foreground">暂无概述。</p>
             )}
@@ -351,7 +351,7 @@ export default function ResourceDetail() {
 
           {resource.quickStart && (
             <TabsContent value="quickstart" className="mt-6">
-              <Markdown content={resource.quickStart} />
+              <RichContent content={resource.quickStart} />
             </TabsContent>
           )}
 

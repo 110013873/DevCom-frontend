@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { searchApi } from '@/api/search';
 import { queryKeys } from '@/lib/queryKeys';
 import { ApiError } from '@/lib/http';
+import { toPlainText } from '@/lib/text';
 import type { SearchGroupKey, SearchResult } from '@/types/content';
 import { cn } from '@/lib/utils';
 
@@ -213,9 +214,10 @@ export default function SearchResultPage() {
                               )}
                               <div className="min-w-0">
                                 <h3 className="line-clamp-2 text-sm font-medium text-foreground">{hit.title}</h3>
+                                {/* 课程命中的 summary 是富文本简介，去掉标签再展示 */}
                                 {hit.summary && (
                                   <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
-                                    {hit.summary}
+                                    {toPlainText(hit.summary, 140)}
                                   </p>
                                 )}
                               </div>

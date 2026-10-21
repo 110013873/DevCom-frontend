@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { OptimizedImage } from '@/components/common/OptimizedImage';
+import { toPlainText } from '@/lib/text';
 import { COURSE_LEVEL_LABELS, type CourseListItem } from '@/types/content';
 import { cn } from '@/lib/utils';
 
@@ -12,6 +13,9 @@ interface CourseCardProps {
 
 /** 课程卡片。`duration` 是运营填的自由文本（如「10 天 · 约 20 学时」），原样展示。 */
 export function CourseCard({ item, className }: CourseCardProps) {
+  // 简介在后台是富文本，卡片上只能放纯文本 —— 直接渲染会把 <p> 之类的标签显示出来
+  const excerpt = toPlainText(item.description, 120);
+
   return (
     <Link
       to={`/courses/${item.id}`}
@@ -36,8 +40,8 @@ export function CourseCard({ item, className }: CourseCardProps) {
 
         <h3 className="mt-3 line-clamp-2 text-base font-semibold leading-snug text-foreground">{item.title}</h3>
 
-        {item.description && (
-          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
+        {excerpt && (
+          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{excerpt}</p>
         )}
 
         <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-4 text-xs text-muted-foreground">

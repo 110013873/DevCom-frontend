@@ -34,6 +34,40 @@ const HTML_TAG_RE =
   /<\/?(?:div|p|h[1-6]|ul|ol|li|table|thead|tbody|tfoot|tr|td|th|br|hr|strong|b|em|i|u|s|del|blockquote|pre|code|span|a|img|figure|figcaption|section|article|header|footer|font|sub|sup|video|audio|source)\b[^>]*>/i;
 
 /**
+ * 把富文本正文压成单行纯文本，用于卡片摘要、`<meta>` 描述这类**只能放纯文本**
+ * 的位置。
+ *
+ * 后台的课程简介、资源概览都是富文本编辑器产出，存的是 HTML。直接塞进 JSX
+ * 文本节点或 `SEOHead` 的 `description`，标签会原样显示（`<p>…</p>`）或进到
+ * 搜索结果里。
+ *
+ * 不走 DOM：这里只做字符串处理，不依赖浏览器，也能在 SSR/测试环境里跑。
+ * 正则只删标签、不试图解析 HTML —— 输入是自家编辑器产出的良性内容，
+ * 目的只是去掉标记，不是做净化（需要渲染 HTML 时用 `SafeHtml`，那里有 DOMPurify）。
+ */
+export function toPlainText(content: string | null | undefined, maxLength?: number): string {
+  if (!content) {
+    return '';
+  }
+  const text = content
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<\/(?:p|div|li|h[1-6]|blockquote|tr)>/gi, ' ')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&amp;/gi, '&')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (maxLength && text.length > maxLength) {
+    return `${text.slice(0, maxLength)}…`;
+  }
+  return text;
+}
+
+/**
  * 判断后台维护的长文正文是 HTML 还是 Markdown。
  *
  * 两条正文通道（HTML 富文本、Markdown 源文）共用 `contentHtml` 这一个字段，
