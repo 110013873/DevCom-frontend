@@ -9,7 +9,7 @@ const COOPERATION = [
   {
     icon: Building2,
     title: '生态伙伴',
-    description: '面向芯片、工具链与终端厂商，共建 RISC-V AI 的软硬件适配与联合方案。',
+    description: '面向芯片、工具链与终端厂商，共建 TileLang for RISC-V 的软硬件适配与联合方案。',
   },
   {
     icon: Users,
@@ -45,7 +45,7 @@ export function JoinCta() {
         <div className="max-w-2xl">
           <h2 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">共建开放协同的生态</h2>
           <p className="hero-surface-muted mt-4 text-base leading-relaxed">
-            社区以开放协作的方式推进 RISC-V 与 AI 的技术落地。无论你是开发者、讲师，还是企业与科研机构，
+            社区以开放协作的方式推进 TileLang for RISC-V 的技术落地。无论你是开发者、讲师，还是企业与科研机构，
             都可以在这里找到参与的方式。
           </p>
         </div>

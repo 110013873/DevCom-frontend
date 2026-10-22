@@ -46,8 +46,11 @@ export const zh = {
     code: '验证码',
     sendCode: '获取验证码',
     resendIn: (seconds: number) => `${seconds} 秒后重发`,
-    account: '邮箱或手机号',
-    accountPlaceholder: '请输入注册时使用的邮箱或手机号',
+    // 短信服务尚未接入，暂时仅展示邮箱；原手机号文案保留，接入后恢复。
+    // account: '邮箱或手机号',
+    // accountPlaceholder: '请输入注册时使用的邮箱或手机号',
+    account: '邮箱',
+    accountPlaceholder: '请输入注册时使用的邮箱',
     login: '登录',
     register: '注册',
     forgot: '忘记密码？',
@@ -90,7 +93,8 @@ export const zh = {
     },
     forgot: {
       title: '找回账号访问',
-      subtitle: '通过注册时使用的邮箱或手机号验证后，即可设置新密码',
+      // subtitle: '通过注册时使用的邮箱或手机号验证后，即可设置新密码',
+      subtitle: '通过注册时使用的邮箱验证后，即可设置新密码',
       bullets: [],
     },
   },

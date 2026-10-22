@@ -21,7 +21,8 @@ const PASSWORD_MIN = 8;
 const schema = z
   .object({
     channel: z.enum(['email', 'sms']),
-    identifier: z.string().trim().min(1, { message: '请输入注册时使用的邮箱或手机号' }),
+    // 短信服务接入后恢复提示：请输入注册时使用的邮箱或手机号。
+    identifier: z.string().trim().min(1, { message: '请输入注册时使用的邮箱' }),
     code: z.string().trim().length(6, { message: '验证码为 6 位数字' }),
     password: z.string().min(PASSWORD_MIN, { message: `密码长度不能少于 ${PASSWORD_MIN} 位` }),
     confirmPassword: z.string(),
@@ -77,7 +78,7 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <SEOHead title={zh.auth.forgotTitle} description="通过邮箱或手机验证码重置 TileLang for RISC-V 社区账号密码。" />
+      <SEOHead title={zh.auth.forgotTitle} description="通过邮箱验证码重置 TileLang for RISC-V 社区账号密码。" />
       <AuthSplitLayout
         panelTitle={zh.authPanel.forgot.title}
         panelSubtitle={zh.authPanel.forgot.subtitle}
@@ -85,7 +86,7 @@ export default function ForgotPassword() {
       >
         <AuthCard
           title={zh.auth.forgotTitle}
-          subtitle="验证注册邮箱或手机号后即可设置新密码"
+          subtitle="验证注册邮箱后即可设置新密码"
           footer={
             <span className="text-muted-foreground">
               {zh.auth.hasAccount} <AuthFooterLink to="/login">{zh.auth.goLogin}</AuthFooterLink>
@@ -129,9 +130,11 @@ export default function ForgotPassword() {
                           setNotice(null);
                         }}
                       >
-                        <TabsList className="grid w-full grid-cols-2">
+                        <TabsList className="grid w-full grid-cols-1">
                           <TabsTrigger value="email">{zh.auth.byChannelEmail}</TabsTrigger>
+                          {/* 短信服务尚未接入，暂时隐藏手机号入口；接入后取消注释并恢复 grid-cols-2。
                           <TabsTrigger value="sms">{zh.auth.byChannelPhone}</TabsTrigger>
+                          */}
                         </TabsList>
                       </Tabs>
                     </FormControl>

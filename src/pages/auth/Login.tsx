@@ -14,7 +14,8 @@ import { ApiError } from '@/lib/http';
 import { zh } from '@/locales/zh';
 
 const schema = z.object({
-  account: z.string().trim().min(1, { message: '请输入邮箱或手机号' }),
+  // 短信服务接入后恢复提示：请输入邮箱或手机号。
+  account: z.string().trim().min(1, { message: '请输入邮箱' }),
   password: z.string().min(1, { message: '请输入密码' }),
 });
 

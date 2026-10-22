@@ -6,7 +6,8 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+// 暂时隐藏注册方式选择栏，恢复时一并取消此导入的注释。
+// import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AuthCard, AuthFooterLink, FormAlert } from '@/components/auth/AuthCard';
 import { AuthSplitLayout } from '@/components/auth/AuthSplitLayout';
@@ -151,6 +152,7 @@ export default function Register() {
                 </div>
               )}
 
+              {/* 当前仅开放邮箱注册，默认 channel 保持 email；短信接入后恢复选择栏并改回 grid-cols-2。
               <FormField
                 control={form.control}
                 name="channel"
@@ -166,7 +168,7 @@ export default function Register() {
                           setNotice(null);
                         }}
                       >
-                        <TabsList className="grid w-full grid-cols-2">
+                        <TabsList className="grid w-full grid-cols-1">
                           <TabsTrigger value="email">{zh.auth.byChannelEmail}</TabsTrigger>
                           <TabsTrigger value="sms">{zh.auth.byChannelPhone}</TabsTrigger>
                         </TabsList>
@@ -175,6 +177,7 @@ export default function Register() {
                   </FormItem>
                 )}
               />
+              */}
 
               {channel === 'email' ? (
                 <FormField

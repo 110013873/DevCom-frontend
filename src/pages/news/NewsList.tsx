@@ -100,7 +100,7 @@ export default function NewsList() {
         canonicalUrl="/news"
       />
 
-      <PageHeader title="社区资讯" description="掌握 RISC-V 与 AI 领域的最新动态、技术解读与生态进展" />
+      <PageHeader title="社区资讯" description="掌握 TileLang for RISC-V 领域的最新动态、技术解读与生态进展" />
 
       <div className="mx-auto w-full max-w-[1280px] px-4 py-10 md:px-6 md:py-14">
         <div className="flex flex-col gap-6 lg:flex-row">
