@@ -26,7 +26,7 @@ export function CourseCard({ item, className }: CourseCardProps) {
     >
       <div className="h-40 bg-surface-elevated">
         {item.coverImage ? (
-          <OptimizedImage src={item.coverImage} alt={item.title} className="h-40 w-full object-cover" />
+          <OptimizedImage src={item.coverImage} alt={item.title} className="h-40 w-full object-contain" />
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-muted-foreground">课程</div>
         )}

@@ -29,7 +29,7 @@ export function ResourceCard({ item, className }: ResourceCardProps) {
     >
       <div className="h-36 bg-surface-elevated">
         {item.coverImage ? (
-          <OptimizedImage src={item.coverImage} alt={item.name} className="h-36 w-full object-cover" />
+          <OptimizedImage src={item.coverImage} alt={item.name} className="h-36 w-full object-contain" />
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
             {resourceCategoryLabel(item.category)}

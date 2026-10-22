@@ -150,7 +150,7 @@ export default function CourseDetail() {
             alt={course.title}
             loading="lazy"
             decoding="async"
-            className="mt-8 aspect-video w-full rounded-[1.25rem] border border-border object-cover"
+            className="mt-8 h-auto w-full rounded-[1.25rem] border border-border object-contain"
           />
         )}
 

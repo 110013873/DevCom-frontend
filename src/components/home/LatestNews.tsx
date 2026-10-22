@@ -41,7 +41,7 @@ function NewsRow({ item }: { item: NewsListItem }) {
           <OptimizedImage
             src={item.coverImage}
             alt={item.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+            className="h-full w-full object-contain"
           />
         </div>
       )}

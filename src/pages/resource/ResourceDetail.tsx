@@ -164,7 +164,7 @@ export default function ResourceDetail() {
                 alt={resource.name}
                 loading="lazy"
                 decoding="async"
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
               />
             ) : (
               <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
