@@ -15,6 +15,8 @@ export const zh = {
     /** 官网首页，用于页脚与「返回官网」入口 */
     portalUrl: 'https://www.tlaic.ac.cn',
     portalName: '北京通明湖信息技术应用创新中心',
+    /** 开源仓库，页头 GitHub 图标指向这里 */
+    repoUrl: 'https://github.com/TongmingLAIC/tilelang-riscv',
   },
 
   nav: {
@@ -29,6 +31,7 @@ export const zh = {
     profile: '个人中心',
     admin: '管理后台',
     search: '全站搜索',
+    github: 'GitHub 开源仓库',
     notifications: '消息中心',
     guidelines: '社区公约',
     contact: '联系方式',
@@ -119,6 +122,7 @@ export const zh = {
     contact: '联系我们',
     links: '相关链接',
     followUs: '关注社区',
+    github: 'TileLang for RISC-V GitHub仓库',
     rights: '版权所有',
   },
 } as const;

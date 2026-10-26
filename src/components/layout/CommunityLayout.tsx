@@ -2,7 +2,7 @@ import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
-import { Bell, Menu, X, LogOut, User as UserIcon, LayoutDashboard, ChevronDown, Search } from 'lucide-react';
+import { Bell, Menu, X, LogOut, User as UserIcon, LayoutDashboard, ChevronDown, Search, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -233,6 +233,26 @@ export function SiteHeader() {
             </Link>
           </Button>
 
+          {/* 开源仓库入口：外链。尺寸与搜索图标一致，但加一圈细描边 ——
+              并排两个纯 ghost 图标会分不清哪个是站内、哪个是跳出去。
+              不显示 Star 数：访客在站内看到的数字永远滞后，不如只留入口。 */}
+          <Button
+            variant="ghost"
+            size="icon"
+            asChild
+            className="rounded-full border border-white/20 text-white hover:border-cyan-300/60 hover:bg-white/10 hover:text-cyan-300"
+          >
+            <a
+              href={zh.site.repoUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={zh.nav.github}
+              title={zh.nav.github}
+            >
+              <Github className="h-4 w-4" />
+            </a>
+          </Button>
+
           {status === 'authenticated' && user ? (
             <>
               <UnreadBadge />
@@ -363,6 +383,18 @@ export function SiteHeader() {
                 </Link>
               </Button>
 
+              <Button
+                variant="outline"
+                className="justify-start border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-cyan-300"
+                asChild
+                onClick={() => setMobileOpen(false)}
+              >
+                <a href={zh.site.repoUrl} target="_blank" rel="noreferrer">
+                  <Github className="mr-2 h-4 w-4" />
+                  {zh.nav.github}
+                </a>
+              </Button>
+
               {status === 'authenticated' && user ? (
                 <>
                   <Button
@@ -475,6 +507,14 @@ function SiteFooter() {
             >
               {zh.auth.privacyPolicy}
             </Link>
+            <a
+              href={zh.site.repoUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm text-muted-foreground transition-colors hover:text-primary"
+            >
+              {zh.footer.github}
+            </a>
             <a
               href={zh.site.portalUrl}
               target="_blank"
