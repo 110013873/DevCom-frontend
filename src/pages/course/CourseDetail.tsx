@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, CalendarDays, Clock, ExternalLink, FileText, Lock, PlayCircle, User } from 'lucide-react';
+import { ArrowLeft, CalendarDays, Clock, ExternalLink, FileText, Lock, User } from 'lucide-react';
 import { SEOHead } from '@/components/common/SEOHead';
 import { ErrorState, LoadingBlock } from '@/components/common/PageStates';
 import { RichContent } from '@/components/markdown';
@@ -12,12 +12,9 @@ import { formatDateTime } from '@/lib/datetime';
 import { toPlainText } from '@/lib/text';
 import { COURSE_LEVEL_LABELS, LESSON_TYPE_LABELS, type CourseDay, type LessonSummary } from '@/types/content';
 
-/** 课节类型图标。`external` 用外链图标，其余按内容形态区分。 */
+/** 课节类型图标。`external` 用外链图标，其余（markdown）用文档图标。 */
 function LessonIcon({ type }: { type: LessonSummary['type'] }) {
   const className = 'h-4 w-4 shrink-0 text-muted-foreground';
-  if (type === 'video') {
-    return <PlayCircle className={className} />;
-  }
   if (type === 'external') {
     return <ExternalLink className={className} />;
   }

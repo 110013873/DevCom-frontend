@@ -357,7 +357,7 @@ export interface UpsertLessonPayload {
   dayId?: string;
   type?: LessonType;
   content?: string;
-  externalUrl?: string;
+  externalUrl?: string | null;
   isPaid?: boolean;
   duration?: number;
   sortOrder?: number;

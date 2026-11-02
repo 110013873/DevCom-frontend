@@ -245,7 +245,7 @@ export const RATING_MAX = 5;
 // ---------------------------------------------------------------------------
 
 export type CourseLevel = 'beginner' | 'intermediate' | 'advanced';
-export type LessonType = 'markdown' | 'video' | 'doc' | 'external';
+export type LessonType = 'markdown' | 'external';
 
 export const COURSE_LEVEL_LABELS: Record<CourseLevel, string> = {
   beginner: '入门',
@@ -255,8 +255,6 @@ export const COURSE_LEVEL_LABELS: Record<CourseLevel, string> = {
 
 export const LESSON_TYPE_LABELS: Record<LessonType, string> = {
   markdown: '图文',
-  video: '视频',
-  doc: '文档',
   external: '外部链接',
 };
 

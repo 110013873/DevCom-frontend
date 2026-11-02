@@ -38,6 +38,9 @@ export function uploadFile(
 
   return http.post<UploadedAttachment[]>('/v1/upload', form, {
     params: { purpose },
+    // 上传是唯一的大文件长请求：全局 30s 超时对 500MB 文件必超时，
+    // 这里单独放宽到 10 分钟，与后端 OSS 的 CLIENT_TIMEOUT 对齐。
+    timeout: 600_000,
     onUploadProgress: onProgress
       ? event => {
           if (event.total) {

@@ -32,6 +32,7 @@ import {
 import SEOHead from '@/components/common/SEOHead';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 import ImageUploadField from '@/components/admin/ImageUploadField';
+import MarkdownEditor from '@/components/admin/MarkdownEditor';
 import { adminCourseApi, RESOURCE_STATUS_OPTIONS } from '@/api/admin';
 import { ApiError } from '@/lib/http';
 import { queryKeys } from '@/lib/queryKeys';
@@ -219,13 +220,15 @@ export default function AdminCourseEditor() {
         title: lesson.title,
         dayId: lesson.dayId ?? undefined,
         type: lesson.type,
+        // 图文正文必须原样回填，否则编辑保存会把存量正文清空（数据丢失缺陷）
+        content: lesson.content ?? '',
         externalUrl: lesson.externalUrl ?? undefined,
         isPaid: lesson.isPaid,
         duration: lesson.duration ?? undefined,
         sortOrder: lesson.sortOrder,
       });
     } else {
-      lessonForm.setFieldsValue({ type: 'markdown', isPaid: false, sortOrder: 0, dayId });
+      lessonForm.setFieldsValue({ type: 'markdown', content: '', isPaid: false, sortOrder: 0, dayId });
     }
     setLessonModal({ open: true, lesson: lesson ?? null, dayId: dayId ?? lesson?.dayId ?? null });
   };
@@ -570,15 +573,22 @@ export default function AdminCourseEditor() {
         <Form<UpsertLessonPayload>
           form={lessonForm}
           layout="vertical"
-          onFinish={values =>
+          onFinish={values => {
+            const type = values.type ?? 'markdown';
             saveLessonMutation.mutate({
-              ...values,
               title: values.title.trim(),
-              externalUrl: values.externalUrl?.trim() || undefined,
-              // 空串会让后端把 externalUrl 存成 ''，这里统一转成 undefined
-              content: values.content || undefined,
-            })
-          }
+              dayId: values.dayId,
+              type,
+              // 图文正文可为空（规格 Edge Case 允许占位）：空串必须原样提交，
+              // 让后端把 content 落成 ''，而不是用 `|| undefined` 转成「不提交」
+              content: type === 'markdown' ? (values.content ?? '') : undefined,
+              // external 类型提交外链，markdown 类型显式置空（后端三态语义）
+              externalUrl: type === 'external' ? (values.externalUrl?.trim() || null) : null,
+              isPaid: values.isPaid,
+              duration: values.duration,
+              sortOrder: values.sortOrder,
+            });
+          }}
         >
           <Form.Item
             name="title"
@@ -600,10 +610,35 @@ export default function AdminCourseEditor() {
           <Form.Item name="type" label="形式" rules={[{ required: true }]}>
             <Select options={LESSON_TYPE_OPTIONS} />
           </Form.Item>
-          {/* 外链课时只用到 externalUrl；正文课时只用到 content。两个都留着，用哪个填哪个 */}
-          <Form.Item name="externalUrl" label="外部链接" extra="形式为「外部链接」时必填">
-            <Input placeholder="https://..." />
+
+          {/* 按形式渲染内容区：图文 → 统一 Markdown 编辑器；外链 → 整节跳转链接 */}
+          <Form.Item noStyle shouldUpdate={prev => prev.type !== undefined}>
+            {({ getFieldValue }) => {
+              const type = getFieldValue('type') as LessonType | undefined;
+              if (type === 'external') {
+                return (
+                  <Form.Item
+                    name="externalUrl"
+                    label="外部链接"
+                    rules={[{ required: true, message: '外部链接课时必须填写跳转地址' }, { type: 'url', message: '请输入合法的链接' }]}
+                    extra="保存后前台整节跳转到该链接"
+                  >
+                    <Input placeholder="https://..." />
+                  </Form.Item>
+                );
+              }
+              // markdown（默认）：统一 Markdown 编辑器，支持插入图片/视频/文档
+              return (
+                <Form.Item name="content" label="正文内容" extra="Markdown 源码编辑，右侧实时预览；可插入图片、视频、文档（本地或网络地址）">
+                  <MarkdownEditor
+                    value={lessonForm.getFieldValue('content') ?? ''}
+                    onChange={next => lessonForm.setFieldsValue({ content: next })}
+                  />
+                </Form.Item>
+              );
+            }}
           </Form.Item>
+
           <Form.Item name="duration" label="时长（分钟）">
             <InputNumber min={1} max={10000} className="w-full" placeholder="可留空" />
           </Form.Item>

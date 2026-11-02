@@ -51,6 +51,27 @@ export function Markdown({ content, className }: MarkdownProps) {
               </a>
             );
           },
+          // 课时正文里的「视频」以内嵌语法表达：`![video](url)`。
+          // 渲染成 HTML5 <video> 播放器（URL 为平台 /static/video/... 或外链），
+          // 其余图片照常 <img>。
+          img: ({ src, alt, ...rest }) => {
+            if (alt === 'video' && src) {
+              return (
+                <video
+                  className="my-6 w-full rounded-xl border border-border bg-black"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  src={src}
+                >
+                  <p className="p-4 text-sm text-muted-foreground">
+                    当前浏览器不支持视频播放，请<a className="text-primary" href={src} target="_blank" rel="noopener noreferrer">下载视频</a>。
+                  </p>
+                </video>
+              );
+            }
+            return <img src={src} alt={alt} {...rest} className="my-6 max-w-full rounded-xl" />;
+          },
           // 表格在 prose 下默认铺满，移动端会溢出，包一层横向滚动
           table: ({ children, ...rest }) => (
             <div className="my-6 w-full overflow-x-auto">
